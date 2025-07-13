@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Node.js
+node_modules/
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Environment
+.env
+
+# VSCode
+.vscode/
+
+# Logs
+*.log
