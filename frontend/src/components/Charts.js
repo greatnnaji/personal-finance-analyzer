@@ -36,6 +36,14 @@ const Charts = ({ analysis }) => {
     category: expense.category
   }));
 
+  // Prepare data for spending patterns
+  const spendingByDay = analysis.spending_patterns?.spending_by_day || {};
+  const dayOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const spendingByDayData = dayOrder.map(day => ({
+    day: day.substring(0, 3), // Short day names
+    amount: Math.abs(spendingByDay[day] || 0)
+  }));
+
   // Custom tooltip for pie chart
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -124,6 +132,20 @@ const Charts = ({ analysis }) => {
               <Line type="monotone" dataKey="expenses" stroke="#FF8042" strokeWidth={2} name="Expenses" />
               <Line type="monotone" dataKey="net" stroke="#0088FE" strokeWidth={2} name="Net Income" />
             </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Spending by Day of Week */}
+        <div className="chart-card">
+          <h3>Spending by Day of Week</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={spendingByDayData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="day" />
+              <YAxis />
+              <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
+              <Bar dataKey="amount" fill="#8884D8" name="Spending" />
+            </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
