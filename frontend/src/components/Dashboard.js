@@ -2,7 +2,7 @@ import React from 'react';
 import TransactionList from './TransactionList';
 import Charts from './Charts';
 import SummaryCards from './SummaryCards';
-import AIInsights from './AIInsights';  // Add this import
+import AIInsights from './AIInsights'; 
 import './Dashboard.css';
 
 const Dashboard = ({ data, onReset }) => {
