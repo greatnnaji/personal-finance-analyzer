@@ -25,8 +25,8 @@ class DataAnalyzer:
             'spending_patterns': self._analyze_spending_patterns(df)
         }
 
-        # percentage_of_total error -- fix but first initialize in github
-        #analysis['ai_insights'] = self._generate_ai_insights(df, analysis)
+        # percentage_of_total error -- fix
+        analysis['ai_insights'] = self._generate_ai_insights(df, analysis)
 
         return analysis
     
@@ -63,24 +63,33 @@ class DataAnalyzer:
         # Income by category
         income_by_category = income_df.groupby('category')['amount'].sum()
         income_counts = income_df.groupby('category').size()
+
+        # Calculate total expenses for percentage calculation
+        total_expenses = expense_by_category.sum()
         
         categories = {}
-        
+
         # Process expense categories
         for category in expense_by_category.index:
+            total_spent = expense_by_category[category]
+            percentage = (total_spent / total_expenses * 100) if total_expenses > 0 else 0
+            
             categories[category] = {
-                'total_spent': round(expense_by_category[category], 2),
+                'total_spent': round(total_spent, 2),
                 'transaction_count': int(expense_counts[category]),
-                'average_per_transaction': round(expense_by_category[category] / expense_counts[category], 2),
+                'average_per_transaction': round(total_spent / expense_counts[category], 2),
+                'percentage_of_total': round(percentage, 1),
                 'type': 'expense'
             }
         
         # Process income categories
         for category in income_by_category.index:
+            total_earned = income_by_category[category]
             categories[category] = {
-                'total_earned': round(income_by_category[category], 2),
+                'total_earned': round(total_earned, 2),
                 'transaction_count': int(income_counts[category]),
-                'average_per_transaction': round(income_by_category[category] / income_counts[category], 2),
+                'average_per_transaction': round(total_earned / income_counts[category], 2),
+                'percentage_of_total': 0,  # Income doesn't count towards expense percentage
                 'type': 'income'
             }
         
