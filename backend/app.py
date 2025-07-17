@@ -20,37 +20,7 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 def index():
     return 'Personal Finance Analyzer API is running.'
 
-# @app.route('/api/upload', methods=['POST'])
-# def upload_file():
-#     try:
-#         if 'file' not in request.files:
-#             return jsonify({'error': 'No file provided'}), 400
-        
-#         file = request.files['file']
-        
-#         if file.filename == '':
-#             return jsonify({'error': 'No file selected'}), 400
-        
-#         # Process the uploaded file
-#         processor = FileProcessor(app.config['UPLOAD_FOLDER'])
-#         file_path = processor.save_file(file)
-        
-#         # Parse the file
-#         parser = DataParser()
-#         transactions = parser.parse_file(file_path)
-        
-#         # Clean up uploaded file
-#         processor.cleanup_file(file_path)
-        
-#         return jsonify({
-#             'success': True,
-#             'transactions': transactions,
-#             'count': len(transactions)
-#         })
-        
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
-    
+
 @app.route('/api/upload-and-analyze', methods=['POST'])
 def upload_and_analyze():
     """Combined endpoint: upload file and return analysis"""
@@ -92,32 +62,6 @@ def upload_and_analyze():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
     
-    
-# @app.route('/api/analyze', methods=['POST'])
-# def analyze_transactions():
-#     try:
-#         data = request.get_json()
-#         transactions = data.get('transactions', [])
-        
-#         if not transactions:
-#             return jsonify({'error': 'No transactions provided'}), 400
-        
-#         # Categorize transactions
-#         categorizer = TransactionCategorizer()
-#         categorized_transactions = categorizer.categorize_batch(transactions)
-        
-#         # Analyze the data
-#         analyzer = DataAnalyzer()
-#         analysis = analyzer.analyze_transactions(categorized_transactions)
-        
-#         return jsonify({
-#             'success': True,
-#             'transactions': categorized_transactions,
-#             'analysis': analysis
-#         })
-        
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
