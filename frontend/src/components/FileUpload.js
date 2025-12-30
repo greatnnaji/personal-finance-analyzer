@@ -9,8 +9,8 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
     if (!file) return;
 
     // Validate file type
-    if (!file.name.endsWith('.csv')) {
-      onError('Please upload a CSV file');
+    if (!file.name.endsWith('.pdf')) {
+      onError('Please upload a PDF file');
       return;
     }
 
@@ -84,7 +84,7 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
           ref={fileInputRef}
           type="file"
           className="file-input"
-          accept=".csv"
+          accept=".pdf"
           onChange={handleChange}
           disabled={loading}
         />
@@ -98,7 +98,7 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
           <div className="upload-content">
             <div className="upload-icon">📊</div>
             <h3>Upload Your Transaction Data</h3>
-            <p>Drag and drop your CSV file here, or click to browse</p>
+            <p>Drag and drop your PDF file here, or click to browse</p>
             <div className="file-format-info">
               <p><strong>Expected format:</strong></p>
               <code>Date,Description,Amount,Type</code>
