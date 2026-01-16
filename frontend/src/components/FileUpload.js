@@ -8,9 +8,12 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
   const handleFile = async (file) => {
     if (!file) return;
 
-    // Validate file type
-    if (!file.name.endsWith('.csv')) {
-      onError('Please upload a CSV file');
+     // Validate file type - NOW ACCEPTS PDF
+    const validExtensions = ['.csv', '.pdf', '.xlsx', '.xls'];
+    const fileExtension = file.name. toLowerCase().substring(file.name.lastIndexOf('.'));
+    
+    if (!validExtensions.includes(fileExtension)) {
+      onError('Please upload a CSV, Excel, or PDF file');
       return;
     }
 

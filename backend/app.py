@@ -3,6 +3,7 @@ from flask_cors import CORS
 import os
 from services.file_processor import FileProcessor
 from services.data_parser import DataParser
+from services.pdf_parser import PDFParser
 from services.categorizer import TransactionCategorizer
 from services.analyzer import DataAnalyzer
 
@@ -36,9 +37,16 @@ def upload_and_analyze():
         # Process and parse the uploaded file
         processor = FileProcessor(app.config['UPLOAD_FOLDER'])
         file_path = processor.save_file(file)
-        
-        parser = DataParser()
-        transactions = parser.parse_file(file_path)
+
+        # Parse based on file type
+        if file_path.endswith('.pdf'):
+            # Use PDF parser with LLM
+            pdf_parser = PDFParser()
+            transactions = pdf_parser.parse_pdf_file(file_path)
+        else:
+            # Use CSV/Excel parser
+            parser = DataParser()
+            transactions = parser.parse_file(file_path)
         
         # Clean up uploaded file
         processor.cleanup_file(file_path)
