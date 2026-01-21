@@ -12,11 +12,14 @@ load_dotenv()
 
 class PDFParser:
     def __init__(self):
-        # Initialize OpenAI with API key from environment
+        api_key = os.getenv('OPENAI_API_KEY')
+        
+        # Initialize OpenRouter with API key from environment
         self.llm = ChatOpenAI(
             temperature=0.0,
-            model="gpt-4o-mini",  # More cost-effective for extraction tasks
-            openai_api_key=os. getenv('OPENAI_API_KEY')
+            model="openai/gpt-4o-mini",  # OpenRouter model format
+            openai_api_key=os.getenv('OPENAI_API_KEY'),
+            openai_api_base="https://openrouter.ai/api/v1"
         )
         
         # Define output schema for transaction extraction

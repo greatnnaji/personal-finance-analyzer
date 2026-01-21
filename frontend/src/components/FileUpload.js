@@ -10,7 +10,7 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
 
      // Validate file type - NOW ACCEPTS PDF
     const validExtensions = ['.csv', '.pdf', '.xlsx', '.xls'];
-    const fileExtension = file.name. toLowerCase().substring(file.name.lastIndexOf('.'));
+    const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
     
     if (!validExtensions.includes(fileExtension)) {
       onError('Please upload a CSV, Excel, or PDF file');
@@ -87,7 +87,7 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
           ref={fileInputRef}
           type="file"
           className="file-input"
-          accept=".csv"
+          accept=".csv,.pdf,.xlsx,.xls"
           onChange={handleChange}
           disabled={loading}
         />
@@ -101,10 +101,9 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
           <div className="upload-content">
             <div className="upload-icon">📊</div>
             <h3>Upload Your Transaction Data</h3>
-            <p>Drag and drop your CSV file here, or click to browse</p>
+            <p>Drag and drop your file here, or click to browse</p>
             <div className="file-format-info">
-              <p><strong>Expected format:</strong></p>
-              <code>Date,Description,Amount,Type</code>
+              <p><strong>Accepted formats:</strong> CSV, PDF, Excel (.xlsx, .xls)</p>
             </div>
             <button className="upload-button">Choose File</button>
           </div>

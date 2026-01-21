@@ -85,10 +85,15 @@ class DataAnalyzer:
         # Process income categories
         for category in income_by_category.index:
             total_earned = income_by_category[category]
+            # Ensure values are not NaN before rounding
+            total_earned = 0 if pd.isna(total_earned) else total_earned
+            count = income_counts[category]
+            avg = total_earned / count if count > 0 else 0
+            
             categories[category] = {
                 'total_earned': round(total_earned, 2),
-                'transaction_count': int(income_counts[category]),
-                'average_per_transaction': round(total_earned / income_counts[category], 2),
+                'transaction_count': int(count),
+                'average_per_transaction': round(avg, 2),
                 'percentage_of_total': 0,  # Income doesn't count towards expense percentage
                 'type': 'income'
             }
