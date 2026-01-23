@@ -10,12 +10,15 @@ from langchain_openai import ChatOpenAI
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from dotenv import load_dotenv
 import json
+import glob
 
 # Load environment variables
 load_dotenv()
 
 class PDFParserDebug:
     """PDF Parser with built-in debugging and validation"""
+    
+    DEBUG_DIR = 'utils'
     
     def __init__(self):
         api_key = os.getenv('OPENAI_API_KEY')
@@ -90,6 +93,28 @@ class PDFParserDebug:
         
         return issues
     
+    def cleanup_debug_files(self):
+        """Remove all debug JSON files from utils folder"""
+        debug_patterns = [
+            os.path.join(self.DEBUG_DIR, 'debug_raw_transactions.json'),
+            os.path.join(self.DEBUG_DIR, 'debug_validation_report.json'),
+            os.path.join(self.DEBUG_DIR, 'debug_standardized_transactions.json'),
+            os.path.join(self.DEBUG_DIR, 'test_results.json')
+        ]
+        
+        removed_count = 0
+        for pattern in debug_patterns:
+            for file_path in glob.glob(pattern):
+                try:
+                    os.remove(file_path)
+                    removed_count += 1
+                except Exception as e:
+                    print(f"⚠️  Could not remove {file_path}: {e}")
+        
+        if removed_count > 0:
+            print(f"🧹 Cleaned up {removed_count} debug file(s)")
+        return removed_count
+    
     def parse_and_validate(self, pdf_path: str, save_debug=True) -> tuple:
         """Parse PDF and return (transactions, validation_report)"""
         print(f"\n{'='*60}")
@@ -135,9 +160,11 @@ class PDFParserDebug:
             
             # Save raw LLM output for debugging
             if save_debug:
-                with open('debug_raw_transactions.json', 'w') as f:
+                os.makedirs(self.DEBUG_DIR, exist_ok=True)
+                debug_file = os.path.join(self.DEBUG_DIR, 'debug_raw_transactions.json')
+                with open(debug_file, 'w') as f:
                     json.dump(raw_transactions, f, indent=2)
-                print("💾 Saved raw LLM output to: debug_raw_transactions.json")
+                print(f"💾 Saved raw LLM output to: {debug_file}")
             
             # Step 3: Convert to standard format
             print("\n🔄 Step 3: Converting to standard format...")
@@ -238,13 +265,16 @@ class PDFParserDebug:
             
             # Save report
             if save_debug:
-                with open('debug_validation_report.json', 'w') as f:
+                os.makedirs(self.DEBUG_DIR, exist_ok=True)
+                report_file = os.path.join(self.DEBUG_DIR, 'debug_validation_report.json')
+                with open(report_file, 'w') as f:
                     json.dump(validation_report, f, indent=2, default=str)
-                print("\n💾 Saved validation report to: debug_validation_report.json")
+                print(f"\n💾 Saved validation report to: {report_file}")
                 
-                with open('debug_standardized_transactions.json', 'w') as f:
+                trans_file = os.path.join(self.DEBUG_DIR, 'debug_standardized_transactions.json')
+                with open(trans_file, 'w') as f:
                     json.dump(standardized, f, indent=2, default=str)
-                print("💾 Saved standardized transactions to: debug_standardized_transactions.json")
+                print(f"💾 Saved standardized transactions to: {trans_file}")
             
             print(f"\n{'='*60}")
             print("✅ PARSING COMPLETE")
@@ -334,4 +364,8 @@ if __name__ == "__main__":
     
     print(f"\n✅ Parsed {len(transactions)} valid transactions")
     if report['issues']:
-        print(f"⚠️  {len(report['issues'])} issues found - check debug_validation_report.json")
+        print(f"⚠️  {len(report['issues'])} issues found - check utils/debug_validation_report.json")
+    
+    # Clean up debug files after analysis
+    print("\n")
+    parser.cleanup_debug_files()

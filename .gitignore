@@ -19,3 +19,7 @@ build/
 
 # Logs
 *.log
+
+# Debug files
+backend/utils/debug_*.json
+backend/utils/test_results.json

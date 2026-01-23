@@ -129,7 +129,8 @@ def test_pdf_parsing(pdf_path):
         
         # Step 6: Save detailed output
         print_section("STEP 6: Saving Results")
-        output_file = "test_results.json"
+        os.makedirs('utils', exist_ok=True)
+        output_file = os.path.join('utils', 'test_results.json')
         with open(output_file, 'w') as f:
             json.dump({
                 'transactions': categorized,
