@@ -72,12 +72,16 @@ class DataAnalyzer:
         # Process expense categories
         for category in expense_by_category.index:
             total_spent = expense_by_category[category]
+            # Ensure values are not NaN before calculations
+            total_spent = 0 if pd.isna(total_spent) else total_spent
+            count = expense_counts[category]
             percentage = (total_spent / total_expenses * 100) if total_expenses > 0 else 0
+            avg = total_spent / count if count > 0 else 0
             
             categories[category] = {
                 'total_spent': round(total_spent, 2),
-                'transaction_count': int(expense_counts[category]),
-                'average_per_transaction': round(total_spent / expense_counts[category], 2),
+                'transaction_count': int(count),
+                'average_per_transaction': round(avg, 2),
                 'percentage_of_total': round(percentage, 1),
                 'type': 'expense'
             }

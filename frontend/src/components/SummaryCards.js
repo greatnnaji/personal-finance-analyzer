@@ -6,7 +6,8 @@ const SummaryCards = ({ analysis }) => {
 
   // Get top spending categories
   const topCategories = Object.entries(by_category)
-    .sort(([,a], [,b]) => Math.abs(b.total_spent) - Math.abs(a.total_spent))
+    .filter(([, data]) => data.type === 'expense') // Only show expenses
+    .sort(([,a], [,b]) => (b.total_spent || 0) - (a.total_spent || 0))
     .slice(0, 3);
 
   const formatCurrency = (amount) => {
@@ -46,7 +47,7 @@ const SummaryCards = ({ analysis }) => {
             <div key={category} className="category-item">
               <span className="category-name">{category}</span>
               <span className="category-amount">
-                {formatCurrency(Math.abs(data.total_spent))}
+                {formatCurrency(data.total_spent || 0)}
               </span>
             </div>
           ))}
