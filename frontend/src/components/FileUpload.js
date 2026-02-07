@@ -101,11 +101,11 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
           <div className="upload-content">
             <div className="upload-icon">📊</div>
             <h3>Upload Your Transaction Data</h3>
-<<<<<<< HEAD
-            <p>Drag and drop your PDF file here, or click to browse</p>
-=======
             <p>Drag and drop your file here, or click to browse</p>
-            <p>Drag and drop your file here, or click to browse</p><button className="upload-button">Choose File</button>
+            <div className="file-format-info">
+              <p><strong>Accepted formats:</strong> CSV, PDF, Excel (.xlsx, .xls)</p>
+            </div>
+            <button className="upload-button">Choose File</button>
           </div>
         )}
       </div>
