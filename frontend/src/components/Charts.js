@@ -28,13 +28,46 @@ const Charts = ({ analysis }) => {
 
   // Prepare data for top expenses
   const topExpenses = (analysis.top_expenses || [])//.sort((a, b) => Math.abs(b.amount) - Math.abs(a.amount))
-  .slice(0, 10).map(expense => ({
-    description: expense.description.length > 20 
-      ? expense.description.substring(0, 20) + '...' 
-      : expense.description,
-    amount: Math.abs(expense.amount),
-    category: expense.category
-  }));
+  .slice(0, 10).map(expense => {
+    const fullDescription = expense.description;
+    let displayDescription = fullDescription;
+    
+    // Smart truncation: keep beginning and end for IDs, abbreviate common terms
+    if (fullDescription.length > 25) {
+      if (fullDescription.includes('E-TRANSFER')) {
+        // For E-TRANSFER, keep the last digits of the ID
+        const match = fullDescription.match(/E-TRANSFER\s+(\d+)/);
+        if (match) {
+          const id = match[1];
+          displayDescription = `E-TRANS ...${id.slice(-4)}`;
+        } else {
+          displayDescription = fullDescription.substring(0, 25) + '...';
+        }
+      } else if (fullDescription.includes('INTERNET TRANSFER')) {
+        const match = fullDescription.match(/INTERNET TRANSFER\s+(\w+)/);
+        if (match) {
+          const ref = match[1];
+          displayDescription = `INT TRANS ...${ref.slice(-4)}`;
+        } else {
+          displayDescription = fullDescription.substring(0, 25) + '...';
+        }
+      } else if (fullDescription.includes('PREAUTHORIZED DEBIT')) {
+        displayDescription = fullDescription.replace('PREAUTHORIZED DEBIT', 'PRE-AUTH').substring(0, 25);
+      } else if (fullDescription.includes('SERVICE CHARGE')) {
+        displayDescription = fullDescription.replace('SERVICE CHARGE', 'SVC CHG').substring(0, 25);
+      } else {
+        // Default: show first 25 chars
+        displayDescription = fullDescription.substring(0, 25) + '...';
+      }
+    }
+    
+    return {
+      description: displayDescription,
+      fullDescription: fullDescription, // Store full text for tooltip
+      amount: Math.abs(expense.amount),
+      category: expense.category
+    };
+  });
 
   // Prepare data for spending patterns
   const spendingByDay = analysis.spending_patterns?.spending_by_day || {};
@@ -112,7 +145,12 @@ const Charts = ({ analysis }) => {
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis type="number" />
             <YAxis dataKey="description" type="category" width={200} />
-            <Tooltip formatter={(value) => `$${value.toFixed(2)}`} />
+            <Tooltip 
+              formatter={(value, name, props) => {
+                // Show full description and formatted amount
+                return [`$${value.toFixed(2)}`, props.payload.fullDescription || props.payload.description];
+              }}
+            />
             <Bar dataKey="amount" fill="#FF6F61" />
             </BarChart>
           </ResponsiveContainer>

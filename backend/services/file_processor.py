@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 class FileProcessor:
     def __init__(self, upload_folder):
         self.upload_folder = upload_folder
-        self.allowed_extensions = {'pdf'}
+        self.allowed_extensions = {'csv', 'xlsx', 'xls', 'pdf'}
     
     def allowed_file(self, filename):
         return '.' in filename and \
