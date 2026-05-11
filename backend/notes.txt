@@ -1,0 +1,3 @@
+TO-DO:
+- Need to generalize, get rid of type as columns should be generated from estatements and
+insights should be drawn from these

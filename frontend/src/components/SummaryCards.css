@@ -1,0 +1,86 @@
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .summary-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .summary-card h4 {
+    margin: 0 0 1rem 0;
+    color: #666;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .amount {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .amount.positive {
+    color: #27ae60;
+  }
+  
+  .amount.negative {
+    color: #e74c3c;
+  }
+  
+  .summary-card.income {
+    border-left: 5px solid #27ae60;
+  }
+  
+  .summary-card.expenses {
+    border-left: 5px solid #e74c3c;
+  }
+  
+  .summary-card.net {
+    border-left: 5px solid #3498db;
+  }
+  
+  .summary-card.categories {
+    border-left: 5px solid #9b59b6;
+    text-align: left;
+  }
+  
+  .category-list {
+    margin-top: 1rem;
+  }
+  
+  .category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .category-item:last-child {
+    border-bottom: none;
+  }
+  
+  .category-name {
+    color: #2c3e50;
+    font-size: 0.9rem;
+  }
+  
+  .category-amount {
+    color: #e74c3c;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+  
