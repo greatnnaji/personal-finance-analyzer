@@ -47,10 +47,10 @@ class TransactionCategorizer:
     def categorize_transaction(self, transaction: Dict) -> Dict:
         """Categorize a single transaction"""
         description = transaction.get('description', '').lower()
-        trans_type = transaction.get('type', '')
+        trans_type = transaction.get('type', '').lower()
         
         # Income transactions
-        if trans_type == 'Credit':
+        if trans_type == 'credit':
             for pattern in self.category_patterns['Income']:
                 if re.search(pattern, description):
                     transaction['category'] = 'Income'

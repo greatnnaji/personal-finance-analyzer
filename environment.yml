@@ -4,7 +4,7 @@ channels:
   - defaults
 dependencies:
   - python=3.11
-  - flask=2.3.2
+  - flask=3.0.0
   - pandas=2.0.3
   - openpyxl=3.1.2
   - numpy=1.24.3
@@ -15,6 +15,8 @@ dependencies:
   - openai>=1.0.0
   - pydantic>=2.0.0
   - python-dotenv>=1.0.0
+  - pytest>=7.4.0
   - pip:
     - flask-cors==4.0.0
-    - werkzeug==2.3.6
+    - werkzeug>=3.0.0
+    - pytest-mock>=3.11.1
