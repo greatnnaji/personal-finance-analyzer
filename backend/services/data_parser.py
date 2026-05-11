@@ -96,7 +96,7 @@ class DataParser:
         has_debit_credit = 'debit' in column_mapping and 'credit' in column_mapping
         
         if not has_amount and not has_debit_credit:
-            print(f"Warning: No amount or debit/credit columns found")
+            print("Warning: No amount or debit/credit columns found")
             return None
         
         print(f"Identified columns: {column_mapping}")

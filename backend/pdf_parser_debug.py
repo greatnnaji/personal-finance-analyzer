@@ -21,8 +21,6 @@ class PDFParserDebug:
     DEBUG_DIR = 'utils'
     
     def __init__(self):
-        api_key = os.getenv('OPENAI_API_KEY')
-        
         self.llm = ChatOpenAI(
             temperature=0.0,
             model="openai/gpt-4o-mini",
@@ -80,7 +78,7 @@ class PDFParserDebug:
         else:
             try:
                 datetime.fromisoformat(trans['date'].replace('Z', ''))
-            except:
+            except Exception:
                 issues.append(f"Trans {index}: Invalid date format: {trans['date']}")
         
         # Check type
@@ -118,7 +116,7 @@ class PDFParserDebug:
     def parse_and_validate(self, pdf_path: str, save_debug=True) -> tuple:
         """Parse PDF and return (transactions, validation_report)"""
         print(f"\n{'='*60}")
-        print(f"🔍 PARSING PDF WITH VALIDATION")
+        print("🔍 PARSING PDF WITH VALIDATION")
         print(f"{'='*60}")
         print(f"File: {pdf_path}\n")
         
@@ -195,10 +193,10 @@ class PDFParserDebug:
                     date_str = trans.get('date', '')
                     try:
                         date = datetime.strptime(date_str, '%Y-%m-%d')
-                    except:
+                    except ValueError:
                         try:
                             date = datetime.strptime(date_str, '%m/%d/%Y')
-                        except:
+                        except ValueError:
                             date = datetime.now()
                             conversion_issues.append(f"Trans {idx+1}: Invalid date, using current date")
                     

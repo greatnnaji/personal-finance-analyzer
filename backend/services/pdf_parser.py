@@ -12,8 +12,6 @@ load_dotenv()
 
 class PDFParser:
     def __init__(self):
-        api_key = os.getenv('OPENAI_API_KEY')
-        
         # Initialize OpenRouter with API key from environment
         self.llm = ChatOpenAI(
             temperature=0.0,
@@ -168,11 +166,11 @@ Return the output as a JSON array with key "transactions" containing all extract
                 date_str = trans.get('date', '')
                 try:
                     date = datetime. strptime(date_str, '%Y-%m-%d')
-                except: 
+                except ValueError: 
                     # Try alternative formats
                     try:
                         date = datetime. strptime(date_str, '%m/%d/%Y')
-                    except:
+                    except ValueError:
                         date = datetime.now()
                 
                 standardized_trans = {
