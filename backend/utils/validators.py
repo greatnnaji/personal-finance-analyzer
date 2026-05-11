@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class DataValidator:
     @staticmethod
     def is_valid_date(date_str):
@@ -9,7 +10,7 @@ class DataValidator:
             return True
         except ValueError:
             return False
-    
+
     @staticmethod
     def is_valid_amount(amount):
         """Check if amount is a valid number"""
@@ -18,7 +19,7 @@ class DataValidator:
             return True
         except (ValueError, TypeError):
             return False
-    
+
     @staticmethod
     def is_valid_description(description):
         """Check if description is valid"""
