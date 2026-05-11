@@ -1,165 +1,83 @@
 # Personal Finance Analyzer
 
-A full-stack web application that analyzes personal financial transactions and provides AI-powered insights for better financial decision-making.
+Full-stack app for uploading transaction files, categorizing spending, and viewing analysis in a React dashboard.
 
-## Features
+## Requirements
 
-- **Transaction Processing**: Upload CSV/Excel files with transaction data
-- **Smart Categorization**: Automatically categorizes transactions using rule-based pattern matching
-- **Advanced Analytics**: Spending trends, monthly analysis, and anomaly detection
-- **AI Insights**: Personalized recommendations for budgeting and savings opportunities
-- **Interactive Dashboard**: Visual charts and summary cards for comprehensive financial overview
-- **Budget Risk Prediction**: Early warning system for potential budget overruns
+- Python 3.11
+- Conda
+- Node.js 20+ and npm
 
-## Tech Stack
+## Install
 
-**Backend:**
-- Python 3.8+
-- Flask (Web framework)
-- Pandas (Data processing)
-- NumPy (Statistical analysis)
+From the repo root:
 
-**Frontend:**
-- React.js
-- CSS3
-- Chart.js/Recharts (Data visualization)
-
-## Installation
-
-### Prerequisites
-- Python 3.8 or higher
-- Node.js 14+ and npm
-- Conda (recommended for environment management)
-
-### Backend Setup
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/personal-finance-analyzer.git
-   cd personal-finance-analyzer
-   ```
-
-2. **Create and activate conda environment**
-   ```bash
-   conda create --name personalFinanceAnalyzer python=3.8
-   conda activate personalFinanceAnalyzer
-   ```
-
-3. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Run the Flask server**
-   ```bash
-   python app.py
-   ```
-   The backend will be available at `http://localhost:5050`
-
-### Frontend Setup
-
-1. **Navigate to frontend directory**
-   ```bash
-   mkdir frontend
-   cd frontend
-   ```
-
-2. **Create React app**
-   ```bash
-   npx create-react-app .
-   ```
-
-3. **Install dependencies and start development server**
-   ```bash
-   npm install
-   npm start
-   ```
-   The frontend will be available at `http://localhost:3000`
-
-## Usage
-
-### File Format Requirements
-
-Upload CSV or Excel files with the following columns:
-- **Date**: YYYY-MM-DD format
-- **Description**: Transaction description
-- **Amount**: Transaction amount (positive for income, negative for expenses)
-- **Type**: "Credit" or "Debit"
-
-### Example CSV Format:
-```csv
-Date,Description,Amount,Type
-2024-01-15,Starbucks Coffee,-4.50,Debit
-2024-01-15,Salary Deposit,3000.00,Credit
-2024-01-16,Grocery Store,-85.32,Debit
+```bash
+conda env update --file environment.yml --prune
 ```
 
-### Getting Started
+Then activate the environment:
 
-1. Start both backend and frontend servers
-2. Navigate to `http://localhost:3000`
-3. Upload your transaction file using the file upload interface
-4. View your comprehensive financial analysis and AI-powered insights
-
-## Project Structure
-
-```
-personal-finance-analyzer/
-├── app.py                 # Flask application entry point
-├── requirements.txt       # Python dependencies
-├── services/
-│   ├── analyzer.py       # Financial analysis logic
-│   ├── categorizer.py    # Transaction categorization
-│   ├── data_parser.py    # File parsing and validation
-│   └── file_processor.py # File handling utilities
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Dashboard.js    # Main dashboard component
-│   │   │   ├── Charts.js       # Data visualization
-│   │   │   ├── SummaryCards.js # Financial summary cards
-│   │   │   └── AIInsights.js   # AI recommendations
-│   │   └── App.js
-│   └── public/
-└── data/
-    └── uploads/          # Temporary file storage
+```bash
+conda activate personalFinanceAnalyzer
 ```
 
-## API Endpoints
+## Run the backend
 
-- `POST /api/upload-and-analyze` - Upload file and get analysis results
-- `GET /api/health` - Health check endpoint
+Start the Flask API from the `backend` folder:
 
-## Features in Detail
+```bash
+cd backend
+conda activate personalFinanceAnalyzer
+python app.py
+```
 
-### Transaction Categorization
-- Automatic categorization using regex pattern matching
-- Categories include: Food & Dining, Transportation, Utilities, Entertainment, etc.
-- Customizable category rules
+The API runs on `http://localhost:5050`.
 
-### AI Insights
-- **Spending Anomaly Detection**: Identifies unusual spending patterns
-- **Budget Risk Prediction**: Warns about potential budget overruns
-- **Savings Opportunities**: Suggests areas for cost reduction
-- **Financial Health Assessment**: Evaluates overall financial well-being
+## Run the frontend
 
-### Analytics Dashboard
-- Monthly spending trends
-- Category-wise expense breakdown
-- Income vs. expenses comparison
-- Top expense transactions
-- Spending patterns by day of week
+Start the React app from the `frontend` folder:
 
-## Contributing
+```bash
+cd frontend
+npm install
+npm start
+```
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+The UI runs on `http://localhost:3000`.
 
-## Acknowledgments
+## Run tests
 
-- Built with Flask and React
-- Data processing powered by Pandas and NumPy
-- Financial categorization based on common transaction patterns
+Backend tests:
+
+```bash
+cd backend
+conda activate personalFinanceAnalyzer
+python -m pytest -v
+```
+
+Frontend tests:
+
+```bash
+cd frontend
+npm test
+```
+
+## Typical workflow
+
+1. Start the backend in one terminal.
+2. Start the frontend in a second terminal.
+3. Open `http://localhost:3000`.
+4. Upload a CSV, Excel, or PDF transaction file.
+5. Review the analysis results and charts.
+
+## Supported file types
+
+- CSV
+- Excel (`.xlsx`, `.xls`)
+- PDF
+
+## Notes
+
+- `environment.yml` is the source of truth for backend dependencies.
+- The frontend test script runs in CI mode, so `npm test` exits after the suite finishes.
