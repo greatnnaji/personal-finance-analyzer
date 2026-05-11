@@ -1,62 +1,48 @@
 name: CI
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 on:
   push:
   pull_request:
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '24'
           cache: 'npm'
-
-      - name: Install frontend dependencies
-        working-directory: frontend
-        run: |
-          if [ -f package-lock.json ] || [ -f npm-shrinkwrap.json ] || [ -f yarn.lock ]; then
-            npm ci
-          else
-            npm install
-          fi
-
-      - name: Run frontend tests
-        working-directory: frontend
-        run: npm test --silent
-
-      - name: Build frontend
-        working-directory: frontend
-        run: npm run build --if-present
+          cache-dependency-path: frontend/package-lock.json  # ← tells it where to look
+      - run: npm ci
+      - run: npm test -- --watchAll=false --forceExit --passWithNoTests
+      - run: npm run build
 
   backend:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Miniconda and environment
-        uses: conda-incubator/setup-miniconda@v3
+      - uses: actions/checkout@v4
+      - uses: conda-incubator/setup-miniconda@v3
         with:
-          environment-file: ${{ github.workspace }}/environment.yml
+          environment-file: environment.yml   # ← root level, no prefix
           activate-environment: personalFinanceAnalyzer
-          auto-activate: true
-
-      - name: Install tooling (ruff)
+          auto-activate-base: false
+      - name: Install ruff
+        shell: bash -el {0}
         run: pip install ruff
-
-      - name: Run backend tests
-        working-directory: backend
+      - name: Run tests
+        shell: bash -el {0}
         run: python -m pytest -v
-
-      - name: Lint backend with ruff
-        working-directory: backend
+      - name: Lint
+        shell: bash -el {0}
         run: ruff check .
+      - name: Check formatting
+        shell: bash -el {0}
+        run: ruff format --check .
