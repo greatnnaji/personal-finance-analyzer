@@ -3,7 +3,6 @@ Pytest configuration and shared fixtures for backend tests
 """
 import pytest
 import sys
-import os
 from pathlib import Path
 
 # Add backend module to path for imports

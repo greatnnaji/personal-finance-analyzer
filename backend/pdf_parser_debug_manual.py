@@ -61,7 +61,7 @@ def test_pdf_parsing(pdf_path):
             try:
                 from datetime import datetime
                 datetime.fromisoformat(trans.get('date', '').replace('Z', ''))
-            except:
+            except Exception:
                 issues.append(f"Transaction {i+1}: Invalid date format")
         
         if issues:
@@ -154,7 +154,7 @@ if __name__ == "__main__":
         # Default to sample data if available
         sample_path = "data/sample_data/sample-study-data.csv"
         print("No PDF path provided. Usage: python test_pdf_parser.py <path_to_pdf>")
-        print(f"Example: python test_pdf_parser.py data/uploads/statement.pdf")
+        print("Example: python test_pdf_parser.py data/uploads/statement.pdf")
         sys.exit(1)
     
     test_pdf_parsing(pdf_path)

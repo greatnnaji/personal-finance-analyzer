@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
-from collections import defaultdict
+from datetime import datetime
 from typing import List, Dict, Any
 import calendar
 
