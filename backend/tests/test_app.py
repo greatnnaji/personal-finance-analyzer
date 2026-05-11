@@ -2,7 +2,6 @@
 Unit tests for Flask API endpoints
 """
 import pytest
-import json
 import sys
 from pathlib import Path
 
