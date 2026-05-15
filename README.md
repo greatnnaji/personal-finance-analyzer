@@ -1,8 +1,12 @@
 [![CI](https://github.com/greatnnaji/personal-finance-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/greatnnaji/personal-finance-analyzer/actions/workflows/ci.yml)
 # Personal Finance Analyzer
-
 Full-stack app for uploading transaction files, categorizing spending, and viewing analysis in a React dashboard.
 
+## Get Started
+```bash
+git clone https://github.com/greatnnaji/personal-finance-analyzer.git
+cd personal-finance-analyzer
+```
 ## Requirements
 
 - Python 3.11
