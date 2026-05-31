@@ -29,6 +29,18 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+## API configuration
+
+Set `REACT_APP_API_BASE_URL` in `frontend/.env.local` if you want the app to call a backend other than `http://localhost:5050`.
+
+Example:
+
+```bash
+REACT_APP_API_BASE_URL=http://localhost:5050
+```
+
+If the variable is not set, the app falls back to `http://localhost:5050`.
+
 ### `npm run eject`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
