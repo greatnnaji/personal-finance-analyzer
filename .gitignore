@@ -24,6 +24,9 @@ build/
 notes.md
 notes.txt
 
+# test files
+data/
+
 # Debug files
 backend/utils/debug_*.json
 backend/utils/test_results.json
