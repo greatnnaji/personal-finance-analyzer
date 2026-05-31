@@ -22,6 +22,7 @@ build/
 
 #notes
 notes.md
+notes.txt
 
 # Debug files
 backend/utils/debug_*.json
