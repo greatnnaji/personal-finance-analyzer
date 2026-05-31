@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { UPLOAD_AND_ANALYZE_URL } from '../config/api';
 import './FileUpload.css';
 
 const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
@@ -23,7 +24,7 @@ const FileUpload = ({ onAnalysisComplete, onError, loading, setLoading }) => {
     formData.append('file', file);
 
     try {
-      const response = await fetch('http://localhost:5050/api/upload-and-analyze', {
+      const response = await fetch(UPLOAD_AND_ANALYZE_URL, {
         method: 'POST',
         body: formData,
       });
