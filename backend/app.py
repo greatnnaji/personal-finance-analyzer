@@ -1,83 +1,118 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 import os
+from pathlib import Path
+
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+
 from services.file_processor import FileProcessor
 from services.data_parser import DataParser
 from services.pdf_parser import PDFParser
 from services.categorizer import TransactionCategorizer
 from services.analyzer import DataAnalyzer
 
-app = Flask(__name__)
-CORS(app)
+load_dotenv()
 
-# Configuration
-app.config["UPLOAD_FOLDER"] = "data/uploads"
-app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024  # 16MB max file size
-
-# Ensure upload directory exists
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+BASE_DIR = Path(__file__).resolve().parent
 
 
-@app.route("/")
-def index():
-    return "Personal Finance Analyzer API is running."
+def get_int_env(name, default):
+    value = os.getenv(name)
+    if value is None:
+        return default
 
-
-@app.route("/api/upload-and-analyze", methods=["POST"])
-def upload_and_analyze():
-    """Combined endpoint: upload file and return analysis"""
     try:
-        if "file" not in request.files:
-            return jsonify({"error": "No file provided"}), 400
-
-        file = request.files["file"]
-
-        if file.filename == "":
-            return jsonify({"error": "No file selected"}), 400
-
-        # Process and parse the uploaded file
-        processor = FileProcessor(app.config["UPLOAD_FOLDER"])
-        file_path = processor.save_file(file)
-
-        # Parse based on file type
-        if file_path.endswith(".pdf"):
-            # Use PDF parser with LLM
-            pdf_parser = PDFParser()
-            transactions = pdf_parser.parse_pdf_file(file_path)
-        else:
-            # Use CSV/Excel parser
-            parser = DataParser()
-            transactions = parser.parse_file(file_path)
-
-        # Clean up uploaded file
-        processor.cleanup_file(file_path)
-
-        # Categorize transactions
-        categorizer = TransactionCategorizer()
-        categorized_transactions = categorizer.categorize_batch(transactions)
-
-        # Analyze the data
-        analyzer = DataAnalyzer()
-        analysis = analyzer.analyze_transactions(categorized_transactions)
-
-        return jsonify(
-            {
-                "success": True,
-                "message": f"Successfully analyzed {len(transactions)} transactions",
-                "transactions": categorized_transactions,
-                "analysis": analysis,
-                "count": len(transactions),
-            }
-        )
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return int(value)
+    except ValueError:
+        return default
 
 
-@app.route("/api/health", methods=["GET"])
-def health_check():
-    return jsonify({"status": "healthy"})
+def build_cors_config():
+    origins = os.getenv("CORS_ORIGINS", "*")
+    if origins.strip() == "*":
+        return {"origins": "*"}
+
+    parsed_origins = [origin.strip() for origin in origins.split(",") if origin.strip()]
+    return {"origins": parsed_origins}
+
+
+def create_app():
+    app = Flask(__name__)
+    CORS(app, **build_cors_config())
+
+    app.config["UPLOAD_FOLDER"] = os.getenv(
+        "UPLOAD_FOLDER", str(BASE_DIR / "data" / "uploads")
+    )
+    app.config["MAX_CONTENT_LENGTH"] = get_int_env(
+        "MAX_CONTENT_LENGTH", 16 * 1024 * 1024
+    )
+
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+
+    register_routes(app)
+    return app
+
+
+def register_routes(app):
+    @app.route("/")
+    def index():
+        return "Personal Finance Analyzer API is running."
+
+    @app.route("/api/upload-and-analyze", methods=["POST"])
+    def upload_and_analyze():
+        """Combined endpoint: upload file and return analysis"""
+        try:
+            if "file" not in request.files:
+                return jsonify({"error": "No file provided"}), 400
+
+            file = request.files["file"]
+
+            if file.filename == "":
+                return jsonify({"error": "No file selected"}), 400
+
+            processor = FileProcessor(app.config["UPLOAD_FOLDER"])
+            file_path = processor.save_file(file)
+
+            try:
+                if file_path.endswith(".pdf"):
+                    pdf_parser = PDFParser()
+                    transactions = pdf_parser.parse_pdf_file(file_path)
+                else:
+                    parser = DataParser()
+                    transactions = parser.parse_file(file_path)
+
+                categorizer = TransactionCategorizer()
+                categorized_transactions = categorizer.categorize_batch(transactions)
+
+                analyzer = DataAnalyzer()
+                analysis = analyzer.analyze_transactions(categorized_transactions)
+
+                return jsonify(
+                    {
+                        "success": True,
+                        "message": f"Successfully analyzed {len(transactions)} transactions",
+                        "transactions": categorized_transactions,
+                        "analysis": analysis,
+                        "count": len(transactions),
+                    }
+                )
+            finally:
+                processor.cleanup_file(file_path)
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/api/health", methods=["GET"])
+    def health_check():
+        return jsonify({"status": "healthy"})
+
+
+app = create_app()
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5050)
+    app.run(
+        host=os.getenv("FLASK_HOST", "0.0.0.0"),
+        port=get_int_env("FLASK_PORT", 5050),
+        debug=os.getenv("FLASK_DEBUG", "0") == "1",
+    )
