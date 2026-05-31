@@ -74,28 +74,32 @@ def register_routes(app):
             file_path = processor.save_file(file)
 
             try:
-                if file_path.endswith(".pdf"):
-                    pdf_parser = PDFParser()
-                    transactions = pdf_parser.parse_pdf_file(file_path)
-                else:
-                    parser = DataParser()
-                    transactions = parser.parse_file(file_path)
+                try:
+                    if file_path.endswith(".pdf"):
+                        pdf_parser = PDFParser()
+                        transactions = pdf_parser.parse_pdf_file(file_path)
+                    else:
+                        parser = DataParser()
+                        transactions = parser.parse_file(file_path)
 
-                categorizer = TransactionCategorizer()
-                categorized_transactions = categorizer.categorize_batch(transactions)
+                    categorizer = TransactionCategorizer()
+                    categorized_transactions = categorizer.categorize_batch(transactions)
 
-                analyzer = DataAnalyzer()
-                analysis = analyzer.analyze_transactions(categorized_transactions)
+                    analyzer = DataAnalyzer()
+                    analysis = analyzer.analyze_transactions(categorized_transactions)
 
-                return jsonify(
-                    {
-                        "success": True,
-                        "message": f"Successfully analyzed {len(transactions)} transactions",
-                        "transactions": categorized_transactions,
-                        "analysis": analysis,
-                        "count": len(transactions),
-                    }
-                )
+                    return jsonify(
+                        {
+                            "success": True,
+                            "message": f"Successfully analyzed {len(transactions)} transactions",
+                            "transactions": categorized_transactions,
+                            "analysis": analysis,
+                            "count": len(transactions),
+                        }
+                    )
+                except RuntimeError as e:
+                    # Likely missing API key or other runtime errors from LLM init
+                    return jsonify({"error": str(e)}), 400
             finally:
                 processor.cleanup_file(file_path)
 

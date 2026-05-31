@@ -13,13 +13,11 @@ load_dotenv()
 
 class PDFParser:
     def __init__(self):
-        # Initialize OpenRouter with API key from environment
-        self.llm = ChatOpenAI(
-            temperature=0.0,
-            model="openai/gpt-4o-mini",  # OpenRouter model format
-            openai_api_key=os.getenv("OPENAI_API_KEY"),
-            openai_api_base="https://openrouter.ai/api/v1",
-        )
+        # Defer LLM creation until needed. Require explicit OpenRouter env var.
+        self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
+        # Use Owl Alpha router model on OpenRouter (fixed)
+        self.model_name = "openrouter/owl-alpha"
+        self.llm = None
 
         # Define output schema for transaction extraction
         self.response_schemas = [
@@ -103,16 +101,39 @@ Return the output as a JSON array with key "transactions" containing all extract
         )
 
         try:
-            # Call the LLM
-            response = self.llm.invoke(messages)
+            # Call the LLM (create lazily)
+            response = self._get_llm().invoke(messages)
 
             # Parse the response
             parsed_output = self._parse_llm_response(response.content)
 
             return parsed_output
 
+        except RuntimeError:
+            # Propagate runtime errors (e.g., missing API key) as-is
+            raise
         except Exception as e:
             raise Exception(f"Error parsing transactions with LLM: {str(e)}")
+
+    def _get_llm(self):
+        """Lazily construct and cache the ChatOpenAI LLM using OpenRouter."""
+        if self.llm is not None:
+            return self.llm
+
+        if not self.openrouter_api_key:
+            raise RuntimeError(
+                "OpenRouter API key not set. Please set OPENROUTER_API_KEY or OPENAI_API_KEY in your environment."
+            )
+
+        # Create ChatOpenAI configured to hit OpenRouter
+        self.llm = ChatOpenAI(
+            temperature=0.0,
+            model=self.model_name,
+            openai_api_key=self.openrouter_api_key,
+            openai_api_base="https://openrouter.ai/api/v1",
+        )
+
+        return self.llm
 
     def _parse_llm_response(self, llm_output: str) -> List[Dict]:
         """Parse LLM response into list of transaction dictionaries"""
