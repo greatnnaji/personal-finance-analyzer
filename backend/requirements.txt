@@ -86,3 +86,4 @@ wheel
 xxhash
 zipp
 zstandard
+gunicorn
