@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from typing import List, Dict
 import pypdf
-from langchain.prompts import ChatPromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from dotenv import load_dotenv
