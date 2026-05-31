@@ -27,3 +27,7 @@ notes.txt
 # Debug files
 backend/utils/debug_*.json
 backend/utils/test_results.json
+
+# Local transaction data
+backend/data/sample_data/
+backend/data/uploads/
