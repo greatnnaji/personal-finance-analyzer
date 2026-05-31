@@ -34,6 +34,15 @@ python app.py
 
 The API runs on `http://localhost:5050`.
 
+For production-style deployment, use a WSGI server such as Gunicorn:
+
+```bash
+cd backend
+gunicorn -b 0.0.0.0:5050 wsgi:application
+```
+
+The backend reads runtime settings from environment variables or a local `.env` file. See `backend/.env.example` for the supported values.
+
 ## Run the frontend
 
 Start the React app from the `frontend` folder:
