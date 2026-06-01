@@ -4,8 +4,7 @@ from typing import List, Dict
 import pypdf
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from langchain_core.output_parsers import StructuredOutputParser
-from langchain.output_parsers import ResponseSchema
+from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from dotenv import load_dotenv
 
 # Load environment variables
