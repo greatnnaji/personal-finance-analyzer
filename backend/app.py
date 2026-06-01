@@ -28,7 +28,7 @@ def get_int_env(name, default):
 
 
 def build_cors_config():
-    origins = os.getenv("CORS_ORIGINS", "*")
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "https://personal-finance-analyzer-one.vercel.app"]}}, supports_credentials=True)
     if origins.strip() == "*":
         return {"origins": "*"}
 
