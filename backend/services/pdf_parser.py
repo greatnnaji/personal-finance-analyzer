@@ -14,9 +14,8 @@ load_dotenv()
 class PDFParser:
     def __init__(self):
         # Defer LLM creation until needed. Require explicit OpenRouter env var.
-        self.openrouter_api_key = os.getenv("OPENROUTER_API_KEY")
-        # Use Owl Alpha router model on OpenRouter (fixed)
-        self.model_name = "openrouter/owl-alpha"
+        self.openrouter_api_key = os.getenv('OPENAI_API_KEY')
+        self.model_name = "openai/gpt-4o-mini"
         self.llm = None
 
         # Define output schema for transaction extraction
