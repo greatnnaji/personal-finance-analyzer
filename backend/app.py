@@ -83,7 +83,9 @@ def register_routes(app):
                         transactions = parser.parse_file(file_path)
 
                     categorizer = TransactionCategorizer()
-                    categorized_transactions = categorizer.categorize_batch(transactions)
+                    categorized_transactions = categorizer.categorize_batch(
+                        transactions
+                    )
 
                     analyzer = DataAnalyzer()
                     analysis = analyzer.analyze_transactions(categorized_transactions)

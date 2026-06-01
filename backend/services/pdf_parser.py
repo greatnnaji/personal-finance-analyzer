@@ -14,7 +14,7 @@ load_dotenv()
 class PDFParser:
     def __init__(self):
         # Defer LLM creation until needed. Require explicit OpenRouter env var.
-        self.openrouter_api_key = os.getenv('OPENAI_API_KEY')
+        self.openrouter_api_key = os.getenv("OPENAI_API_KEY")
         self.model_name = "openai/gpt-4o-mini"
         self.llm = None
 
