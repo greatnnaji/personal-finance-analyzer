@@ -28,7 +28,7 @@ def get_int_env(name, default):
 
 
 def build_cors_config():
-    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "https://personal-finance-analyzer-one.vercel.app"]}}, supports_credentials=True)
+    origins = os.getenv("CORS_ORIGINS", "*")
     if origins.strip() == "*":
         return {"origins": "*"}
 
@@ -38,7 +38,7 @@ def build_cors_config():
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, **build_cors_config())
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "https://personal-finance-analyzer-one.vercel.app"]}}, supports_credentials=True)
 
     app.config["UPLOAD_FOLDER"] = os.getenv(
         "UPLOAD_FOLDER", str(BASE_DIR / "data" / "uploads")
