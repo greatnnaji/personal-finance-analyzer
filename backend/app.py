@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
+from flask import Flask, app, jsonify, request
 from flask_cors import CORS
 
 from services.file_processor import FileProcessor
@@ -28,7 +28,7 @@ def get_int_env(name, default):
 
 
 def build_cors_config():
-    origins = os.getenv("CORS_ORIGINS", "*")
+    CORS(app, resources={r"/api/*": {"origins": ["http://localhost:3000", "https://personal-finance-analyzer-one.vercel.app"]}}, supports_credentials=True)
     if origins.strip() == "*":
         return {"origins": "*"}
 
