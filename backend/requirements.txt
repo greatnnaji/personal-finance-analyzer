@@ -46,7 +46,6 @@ orjson
 ormsgpack
 packaging
 pandas
-pdfminer.six
 pdfplumber
 pillow
 pluggy
@@ -54,9 +53,7 @@ pycparser
 pydantic
 pydantic_core
 Pygments
-PyMuPDF
 pypdf
-pypdfium2
 PySocks
 pytest
 pytest-mock
