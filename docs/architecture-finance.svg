@@ -1,0 +1,121 @@
+<svg width="100%" viewBox="0 0 680 620" role="img" xmlns="http://www.w3.org/2000/svg" style="font-family: ui-sans-serif, system-ui, sans-serif;">
+  <title>Personal Finance Analyzer — Architecture Diagram</title>
+  <desc>Two-layer architecture: React frontend and Flask backend with a data processing pipeline, connected via a single REST endpoint.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="680" height="620" rx="12" fill="#0d1117"/>
+
+  <!-- USER -->
+  <rect x="280" y="24" width="120" height="44" rx="8" fill="#21262d" stroke="#30363d" stroke-width="0.5"/>
+  <text x="340" y="46" text-anchor="middle" dominant-baseline="central" fill="#e6edf3" font-size="14" font-weight="500">User</text>
+
+  <!-- Arrow: User → Frontend -->
+  <line x1="340" y1="68" x2="340" y2="106" stroke="#484f58" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ── FRONTEND CONTAINER ── -->
+  <rect x="40" y="108" width="600" height="160" rx="14" fill="#1c1d52" stroke="#534AB7" stroke-width="0.5" fill-opacity="0.45"/>
+  <text x="56" y="130" dominant-baseline="central" fill="#AFA9EC" font-size="14" font-weight="500">Frontend</text>
+  <text x="56" y="147" dominant-baseline="central" fill="#7F77DD" font-size="12">React.js · Chart.js / Recharts · CSS3</text>
+
+  <!-- FileUpload -->
+  <rect x="60" y="160" width="126" height="72" rx="8" fill="#26215C" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="123" y="187" text-anchor="middle" dominant-baseline="central" fill="#CECBF6" font-size="14" font-weight="500">File upload</text>
+  <text x="123" y="207" text-anchor="middle" dominant-baseline="central" fill="#7F77DD" font-size="12">CSV / Excel input</text>
+
+  <!-- Dashboard -->
+  <rect x="206" y="160" width="126" height="72" rx="8" fill="#26215C" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="269" y="187" text-anchor="middle" dominant-baseline="central" fill="#CECBF6" font-size="14" font-weight="500">Dashboard</text>
+  <text x="269" y="207" text-anchor="middle" dominant-baseline="central" fill="#7F77DD" font-size="12">Summary cards</text>
+
+  <!-- Charts -->
+  <rect x="352" y="160" width="126" height="72" rx="8" fill="#26215C" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="415" y="187" text-anchor="middle" dominant-baseline="central" fill="#CECBF6" font-size="14" font-weight="500">Charts</text>
+  <text x="415" y="207" text-anchor="middle" dominant-baseline="central" fill="#7F77DD" font-size="12">Trends &amp; breakdowns</text>
+
+  <!-- AI Insights -->
+  <rect x="498" y="160" width="126" height="72" rx="8" fill="#26215C" stroke="#534AB7" stroke-width="0.5"/>
+  <text x="561" y="187" text-anchor="middle" dominant-baseline="central" fill="#CECBF6" font-size="14" font-weight="500">AI insights</text>
+  <text x="561" y="207" text-anchor="middle" dominant-baseline="central" fill="#7F77DD" font-size="12">Recommendations</text>
+
+  <!-- Frontend internal arrows -->
+  <line x1="186" y1="196" x2="204" y2="196" stroke="#534AB7" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="332" y1="196" x2="350" y2="196" stroke="#534AB7" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="478" y1="196" x2="496" y2="196" stroke="#534AB7" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- API label -->
+  <text x="340" y="294" text-anchor="middle" dominant-baseline="central" fill="#484f58" font-size="12">POST /api/upload-and-analyze</text>
+  <line x1="160" y1="290" x2="265" y2="290" stroke="#30363d" stroke-width="0.5" stroke-dasharray="4 3"/>
+  <line x1="415" y1="290" x2="520" y2="290" stroke="#30363d" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+  <!-- Bidirectional arrows Frontend ↔ Backend -->
+  <line x1="312" y1="268" x2="312" y2="308" stroke="#484f58" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="368" y1="308" x2="368" y2="268" stroke="#484f58" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ── BACKEND CONTAINER ── -->
+  <rect x="40" y="312" width="600" height="280" rx="14" fill="#0a2a1a" stroke="#0F6E56" stroke-width="0.5" fill-opacity="0.7"/>
+  <text x="56" y="334" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Backend</text>
+  <text x="56" y="351" dominant-baseline="central" fill="#1D9E75" font-size="12">Flask · Python 3.8+ · Conda environment</text>
+
+  <!-- ── data ingestion row ── -->
+  <!-- data_parser -->
+  <rect x="60" y="368" width="132" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="126" y="393" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Data parser</text>
+  <text x="126" y="412" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">CSV / Excel → DataFrame</text>
+
+  <!-- file_processor -->
+  <rect x="212" y="368" width="132" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="278" y="393" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">File processor</text>
+  <text x="278" y="412" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">Validation &amp; storage</text>
+
+  <!-- categorizer -->
+  <rect x="364" y="368" width="132" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="430" y="393" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Categorizer</text>
+  <text x="430" y="412" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">Regex pattern match</text>
+
+  <!-- analyzer -->
+  <rect x="516" y="368" width="108" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="570" y="393" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Analyzer</text>
+  <text x="570" y="412" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">Pandas · NumPy</text>
+
+  <!-- ingestion row arrows -->
+  <line x1="192" y1="402" x2="210" y2="402" stroke="#0F6E56" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="344" y1="402" x2="362" y2="402" stroke="#0F6E56" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="496" y1="402" x2="514" y2="402" stroke="#0F6E56" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- ── analysis row (3 boxes, centred) ── -->
+  <!-- spending trends -->
+  <rect x="82" y="470" width="148" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="156" y="495" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Spending trends</text>
+  <text x="156" y="514" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">Monthly analysis</text>
+
+  <!-- anomaly detection -->
+  <rect x="266" y="470" width="148" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="340" y="495" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Anomaly detection</text>
+  <text x="340" y="514" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">Unusual patterns</text>
+
+  <!-- budget risk -->
+  <rect x="450" y="470" width="148" height="68" rx="8" fill="#04342C" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="524" y="495" text-anchor="middle" dominant-baseline="central" fill="#9FE1CB" font-size="14" font-weight="500">Budget risk</text>
+  <text x="524" y="514" text-anchor="middle" dominant-baseline="central" fill="#1D9E75" font-size="12">Overrun prediction</text>
+
+  <!-- analyzer → analysis row (fan out, L-paths to avoid crossing) -->
+  <!-- analyzer → spending trends -->
+  <path d="M570 436 L570 452 L156 452 L156 468" fill="none" stroke="#0F6E56" stroke-width="0.8" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <!-- analyzer → anomaly detection -->
+  <path d="M570 436 L570 452 L340 452 L340 468" fill="none" stroke="#0F6E56" stroke-width="0.8" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <!-- analyzer → budget risk -->
+  <path d="M570 436 L570 452 L524 452 L524 468" fill="none" stroke="#0F6E56" stroke-width="0.8" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  <!-- ── temp storage note ── -->
+  <rect x="60" y="560" width="124" height="20" rx="4" fill="#083828" stroke="#0F6E56" stroke-width="0.5"/>
+  <text x="122" y="570" text-anchor="middle" dominant-baseline="central" fill="#5DCAA5" font-size="11">data/uploads/ (temp)</text>
+
+  <!-- file_processor → temp storage -->
+  <path d="M278 436 L278 550 L122 550 L122 558" fill="none" stroke="#0F6E56" stroke-width="0.7" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+
+</svg>

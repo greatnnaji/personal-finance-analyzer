@@ -2,6 +2,9 @@
 # Personal Finance Analyzer
 Full-stack app for uploading transaction files, categorizing spending, and viewing analysis in a React dashboard.
 
+## Architecture
+![Architecture diagram](docs/architecture.svg)
+
 ## Get Started
 ```bash
 git clone https://github.com/greatnnaji/personal-finance-analyzer.git
