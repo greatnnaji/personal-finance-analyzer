@@ -4,7 +4,6 @@ from typing import List, Dict
 import pypdf
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from langchain.output_parsers import ResponseSchema, StructuredOutputParser
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -18,33 +17,13 @@ class PDFParser:
         self.model_name = "openai/gpt-4o-mini"
         self.llm = None
 
-        # Define output schema for transaction extraction
-        self.response_schemas = [
-            ResponseSchema(
-                name="date", description="Transaction date in YYYY-MM-DD format"
-            ),
-            ResponseSchema(
-                name="description",
-                description="Transaction description or merchant name",
-            ),
-            ResponseSchema(
-                name="debit",
-                description="Withdrawal amount as a positive number.  If no withdrawal, output 0.0",
-            ),
-            ResponseSchema(
-                name="credit",
-                description="Deposit amount as a positive number. If no deposit, output 0.0",
-            ),
-            ResponseSchema(
-                name="balance",
-                description="Account balance after transaction as a number",
-            ),
-        ]
-
-        self.output_parser = StructuredOutputParser.from_response_schemas(
-            self.response_schemas
-        )
-        self.format_instructions = self.output_parser.get_format_instructions()
+        self.format_instructions = """Return a JSON object with a "transactions" key containing an array of objects.
+Each object must have these fields:
+- date: string in YYYY-MM-DD format
+- description: string
+- debit: number (positive, or 0.0 if not a withdrawal)
+- credit: number (positive, or 0.0 if not a deposit)
+- balance: number"""
 
     def extract_text_from_pdf(self, pdf_path: str) -> str:
         """Extract text content from PDF file"""
