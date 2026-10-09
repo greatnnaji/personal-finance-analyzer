@@ -2,6 +2,11 @@
 # Personal Finance Analyzer
 Full-stack app for uploading transaction files, categorizing spending, and viewing analysis in a React dashboard.
 
+## Screenshots
+![Upload page](docs/screenshots/upload.png)
+
+![Analysis results](docs/screenshots/analysis-results.png)
+
 ## Architecture
 ![Architecture diagram](docs/architecture.svg)
 
